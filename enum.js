@@ -122,6 +122,30 @@ function divideConquer(array, len) {
   return Math.max(singleSubArray, sumLeft+sumRight);
 }
 
+
+// Algorithm 4: Linear-time. Use the following ideas to develop a nonrecursive linear time algorithm. Start
+// at the left end of the array and progress towards the right, keeping track of the maximum subarray sum
+// seen so far. Knowing a maximum subarray of A[1 . . j], extend the answer to find a maximum subarray
+// ending at index j+1 by using the following observation: a maximum subarray of A[1 . . j+1] is either a
+// maximum subarray of A[1 . . j] or a subarray A[i . . j+1], for some 1 ≤ i ≤ j+1. Determine a maximum
+// subarray of the form A[i . . j+1] in constant time based on knowing a maximum subarray ending at
+// index j.
+
+function linearTime(array) {
+  var maxSoFar = Number.MIN_SAFE_INTEGER;
+  var sum = 0;
+
+  // Start at the left end of the array and move towards the right, keeping track of the maximum
+  // sub array seen so far.
+  for(var i = 0; i < array.length; i++) {
+    sum += array[i];
+    maxSoFar = Math.max(sum, maxSoFar);
+  }
+
+  return maxSoFar;
+}
+
+
 console.log("--- Algorithm 1 ---");
 console.log(arrayEnum1(test1));
 console.log(arrayEnum1(test2));
@@ -145,3 +169,12 @@ console.log(divideConquer(test3, test3.length));
 console.log(divideConquer(test4, test4.length));
 console.log(divideConquer(test5, test5.length));
 console.log(divideConquer(test6, test6.length));
+
+
+console.log("--- Algorithm 4 ---");
+console.log(linearTime(test1));
+console.log(linearTime(test2));
+console.log(linearTime(test3));
+console.log(linearTime(test4));
+console.log(linearTime(test5));
+console.log(linearTime(test6));
