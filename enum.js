@@ -88,29 +88,21 @@ subarray will either be:
 
 */
 function divideConquer(array, len) {
-  var sumLeft = 0;
-  var sumRight = 0;
+  var sumLeft = Number.MIN_SAFE_INTEGER;
+  var sumRight = Number.MIN_SAFE_INTEGER;
   var maxSoFar = 0;
   var middle = 0;
   var sum = 0;
 
-  console.log("len: " + len);
-
-
   if(len === 1) {       // Length is 1 so just return the first element.
-    console.log(array);
     return array[0];
   }
 
   // Split array in half.
-  middle = Math.round((len/2));      // Subtract by 1 to get array index.
-  console.log("middle: " + middle);
+  middle = Math.floor((len/2));      // Subtract by 1 to get array index.
 
   var leftMax = divideConquer(array.slice(0, middle), middle);
   var rightMax = divideConquer(array.slice(middle, array.length), len-middle);
-  console.log("leftMax: " + leftMax);
-  console.log("rightMax: " + rightMax);
-
 
   // Search right half.
   for(var i = middle; i < len; i++) {
@@ -121,16 +113,12 @@ function divideConquer(array, len) {
   sum = 0;
 
   // Search left half.
-  for(i = 0; i < middle; i++) {
+  for(i = (middle-1); i >= 0; i--) {
     sum += array[i];
     sumLeft = Math.max(sum, sumLeft);
   }
 
   var singleSubArray = Math.max(leftMax, rightMax);
-
-  console.log("singleSubArray: " + singleSubArray);
-  console.log("leftMax: " + leftMax);
-  console.log("rightMax: " + rightMax);
   return Math.max(singleSubArray, sumLeft+sumRight);
 }
 
@@ -140,6 +128,7 @@ console.log(arrayEnum1(test2));
 console.log(arrayEnum1(test3));
 console.log(arrayEnum1(test4));
 console.log(arrayEnum1(test5));
+console.log(arrayEnum1(test6));
 
 console.log("--- Algorithm 2 ---");
 console.log(arrayEnum2(test1));
@@ -147,6 +136,7 @@ console.log(arrayEnum2(test2));
 console.log(arrayEnum2(test3));
 console.log(arrayEnum2(test4));
 console.log(arrayEnum2(test5));
+console.log(arrayEnum2(test6));
 
 console.log("--- Algorithm 3 ---");
 console.log(divideConquer(test1, test1.length));
