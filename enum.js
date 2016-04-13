@@ -149,9 +149,9 @@ console.log(arrayEnum2(test4));
 console.log(arrayEnum2(test5));
 
 console.log("--- Algorithm 3 ---");
+console.log(divideConquer(test1, test1.length));
+console.log(divideConquer(test2, test2.length));
+console.log(divideConquer(test3, test3.length));
+console.log(divideConquer(test4, test4.length));
+console.log(divideConquer(test5, test5.length));
 console.log(divideConquer(test6, test6.length));
-// console.log(divideConquer(test1, test1.length));
-// console.log(divideConquer(test2, test2.length));
-// console.log(divideConquer(test3, test3.length));
-// console.log(divideConquer(test4, test4.length));
-// console.log(divideConquer(test5, test5.length));
