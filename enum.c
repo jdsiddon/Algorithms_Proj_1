@@ -141,24 +141,26 @@ int divideConquer(int array[], int len) {
 // Algorithm 4: Linear-time. Use the following ideas to develop a nonrecursive linear time algorithm. Start
 // at the left end of the array and progress towards the right, keeping track of the maximum subarray sum
 // seen so far. Knowing a maximum subarray of A[1 . . j], extend the answer to find a maximum subarray
-// ending at index j+1 by using the following observation: a maximum subarray of A[1 . . j+1] is either a
-// maximum subarray of A[1 . . j] or a subarray A[i . . j+1], for some 1 ≤ i ≤ j+1. Determine a maximum
+// ending at index j+1 by using the following observation:
+//  a maximum subarray of A[1 . . j+1] is either a maximum subarray of A[1 . . j]
+//  or a subarray A[i . . j+1], for some 1 ≤ i ≤ j+1. Determine a maximum
 // subarray of the form A[i . . j+1] in constant time based on knowing a maximum subarray ending at
 // index j.
+// https://en.wikipedia.org/wiki/Maximum_subarray_problem
+int linearTime(int array[], int size) {
+  int maxEnding = 0;
+  int maxSoFar = 0;
+  int i = 0;
 
-// function linearTime(array) {
-//   var maxSoFar = Number.MIN_SAFE_INTEGER;
-//   var sum = 0;
-//
-//   // Start at the left end of the array and move towards the right, keeping track of the maximum
-//   // sub array seen so far.
-//   for(var i = 0; i < array.length; i++) {
-//     sum += array[i];
-//     maxSoFar = Math.max(sum, maxSoFar);
-//   }
-//
-//   return maxSoFar;
-// }
+  for(i = 0; i < size; i++) {
+    maxEnding = max(0, maxEnding+array[i]);        // Get current max ending point
+    maxSoFar = max(maxSoFar, maxEnding);
+  }
+
+  return maxSoFar;
+
+}
+
 
 int main() {
   printf("--- Algorithm 1 --- \n");
@@ -185,13 +187,12 @@ int main() {
   printf("%d \n", divideConquer(test4, sizeof(test4)/sizeof(test4[0])));
   printf("%d \n", divideConquer(test5, sizeof(test5)/sizeof(test5[0])));
   printf("%d \n", divideConquer(test6, sizeof(test6)/sizeof(test6[0])));
+
+  printf("--- Algorithm 4 --- \n");
+  printf("%d \n", linearTime(test1, sizeof(test1)/sizeof(test1[0])));
+  printf("%d \n", linearTime(test2, sizeof(test2)/sizeof(test2[0])));
+  printf("%d \n", linearTime(test3, sizeof(test3)/sizeof(test3[0])));
+  printf("%d \n", linearTime(test4, sizeof(test4)/sizeof(test4[0])));
+  printf("%d \n", linearTime(test5, sizeof(test5)/sizeof(test5[0])));
+  printf("%d \n", linearTime(test6, sizeof(test6)/sizeof(test6[0])));
 }
-//
-//
-// console.log("--- Algorithm 4 ---");
-// console.log(linearTime(test1));
-// console.log(linearTime(test2));
-// console.log(linearTime(test3));
-// console.log(linearTime(test4));
-// console.log(linearTime(test5));
-// console.log(linearTime(test6));
