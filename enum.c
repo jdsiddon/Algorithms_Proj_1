@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <string.h>
 
 // This is to prevent compile error "invalid in C99"
 // We are just defining our own max macro.
@@ -162,37 +163,73 @@ int linearTime(int array[], int size) {
 }
 
 
-int main() {
-  printf("--- Algorithm 1 --- \n");
-  printf("%d \n", arrayEnum1(test1, sizeof(test1)/sizeof(test1[0])));
-  printf("%d \n", arrayEnum1(test2, sizeof(test2)/sizeof(test2[0])));
-  printf("%d \n", arrayEnum1(test3, sizeof(test3)/sizeof(test3[0])));
-  printf("%d \n", arrayEnum1(test4, sizeof(test4)/sizeof(test4[0])));
-  printf("%d \n", arrayEnum1(test5, sizeof(test5)/sizeof(test5[0])));
-  printf("%d \n", arrayEnum1(test6, sizeof(test6)/sizeof(test6[0])));
+int main(int argc, char *argv[]) {
+  char inputBuffer[1000];
+  int numberArray[1000];
+  int pos = 0;
+  int i = 0;
 
-  printf("--- Algorithm 2 --- \n");
-  printf("%d \n", arrayEnum2(test1, sizeof(test1)/sizeof(test1[0])));
-  printf("%d \n", arrayEnum2(test2, sizeof(test2)/sizeof(test2[0])));
-  printf("%d \n", arrayEnum2(test3, sizeof(test3)/sizeof(test3[0])));
-  printf("%d \n", arrayEnum2(test4, sizeof(test4)/sizeof(test4[0])));
-  printf("%d \n", arrayEnum2(test5, sizeof(test5)/sizeof(test5[0])));
-  printf("%d \n", arrayEnum2(test6, sizeof(test6)/sizeof(test6[0])));
+  // Make sure they provided an algorithm and file to test.
+  if(argc < 3) {
+    printf("Usage: ./enum [alg[X]] [filename]\n");
+    return 0;
+  }
 
-  //
-  printf("--- Algorithm 3 --- \n");
-  printf("%d \n", divideConquer(test1, sizeof(test1)/sizeof(test1[0])));
-  printf("%d \n", divideConquer(test2, sizeof(test2)/sizeof(test2[0])));
-  printf("%d \n", divideConquer(test3, sizeof(test3)/sizeof(test3[0])));
-  printf("%d \n", divideConquer(test4, sizeof(test4)/sizeof(test4[0])));
-  printf("%d \n", divideConquer(test5, sizeof(test5)/sizeof(test5[0])));
-  printf("%d \n", divideConquer(test6, sizeof(test6)/sizeof(test6[0])));
+  // Make sure they provided a valid algorithm.
+  if (!(strcmp(argv[1], "alg1") == 0 || strcmp(argv[1], "alg2") == 0 || strcmp(argv[1], "alg3") == 0 || strcmp(argv[1], "alg4") == 0)) {
+    printf("Valid algorithms: alg1, alg2, alg3, alg4 \n");
+    return 0;
+  }
 
-  printf("--- Algorithm 4 --- \n");
-  printf("%d \n", linearTime(test1, sizeof(test1)/sizeof(test1[0])));
-  printf("%d \n", linearTime(test2, sizeof(test2)/sizeof(test2[0])));
-  printf("%d \n", linearTime(test3, sizeof(test3)/sizeof(test3[0])));
-  printf("%d \n", linearTime(test4, sizeof(test4)/sizeof(test4[0])));
-  printf("%d \n", linearTime(test5, sizeof(test5)/sizeof(test5[0])));
-  printf("%d \n", linearTime(test6, sizeof(test6)/sizeof(test6[0])));
+  // Make sure input file is readable.
+  FILE *input;
+  input = fopen(argv[2], "r");
+  if (input == NULL) {
+    printf("ERROR: File not readable.");
+    return 0;
+
+  } else {
+    // Open output file to write results to.
+    FILE *output;
+    output = fopen("MSS_Results.txt", "w");        // Open totally new output file.
+
+    while(fgets(inputBuffer, 1000, input)) {       // Get array line.
+      // Write array to output file.
+      fputs(inputBuffer, output); // Write array to file.
+
+      char *number = strtok (inputBuffer, " ,][");
+
+      // Convert input array line to an array of numbers.
+      while (number != NULL)
+      {
+        numberArray[pos] = atoi(number);
+        number = strtok (NULL, " ,][");
+        pos++;
+      }
+
+      bzero((char *) &inputBuffer, sizeof(inputBuffer));      // Clear out input buffer.
+
+      if(strcmp(argv[1], "alg1") == 0) {        // Executing Algorithm 1: Enumeration
+        printf("--- Algorithm 1 --- \n");
+        printf("%d \n", arrayEnum1(numberArray, pos-1));
+      } else if(strcmp(argv[1], "alg2") == 0) { // Executing Algorithm 2: Better Enumeration
+        printf("--- Algorithm 2 --- \n");
+        printf("%d \n", arrayEnum2(numberArray, pos-1));
+      } else if(strcmp(argv[1], "alg3") == 0) { // Executing Algorithm 3: Divide and Conquer
+        printf("--- Algorithm 3 --- \n");
+        printf("%d \n", divideConquer(numberArray, pos-1));
+      } else if(strcmp(argv[1], "alg4") == 0) { // Executing Algorithm 4: Linear-time
+        printf("--- Algorithm 4 --- \n");
+        printf("%d \n", linearTime(numberArray, pos-1));
+      }
+
+      pos = 0;
+    }
+
+    fclose(output);
+    fclose(input);
+
+  }
+
+
 }
