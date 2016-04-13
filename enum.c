@@ -11,20 +11,10 @@
 #endif
 
 
-// Algorithm 1: Enumeration. Loop over each pair of indices i, j and compute the sum.
-// Keep the best sum you have found so far.
-//
-// Loop over
-//
-// Arrays
-int test1[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};         // Should equal 45
-int test2[] = {-1, 1, 1, 1, -1};           // Should equal 3
-int test3[] = {-1, 2, 2, 2, -1};                       // Should equal 6
-int test4[] = {-1, 2, -1};                       // Should equal 2
-int test5[] = {10, -2, -1};                       // Should equal 10
-int test6[] = {1, 2};                       // Should equal 3
-
-
+/*
+  Algorithm 1: Enumeration. Loop over each pair of indices i, j and compute the sum.
+  Keep the best sum you have found so far.
+*/
 int arrayEnum1(int array[], int size) {
   int maxSoFar = 0;
   int subLen = 0;                     // Starts at 1 because 1 is the smallest subarray we can have.
@@ -55,17 +45,10 @@ int arrayEnum1(int array[], int size) {
   return maxSoFar;
 }
 
-// Algorithm 2: Better Enumeration. Notice that in the previous algorithm the same sum is computed
-// Write a new version of the first algorithm that takes advantage of this
-// observation.
-// Example of comparison:
 /*
-  [10, -2, -1]
-    X
-    X   X
-    X   X   X
-        X   X
-            X
+  Algorithm 2: Better Enumeration. Notice that in the previous algorithm the same sum is computed
+  Write a new version of the first algorithm that takes advantage of this
+  observation.
 */
 int arrayEnum2(int array[], int size) {
   int maxSoFar = 0;
@@ -95,13 +78,12 @@ int arrayEnum2(int array[], int size) {
 }
 
 /*
-Algorithm 3: Divide and Conquer. If we split the array into two halves, we know that the maximum
-subarray will either be:
- - Contained entirely in the first half,
- - Contained entirely in the second half or
- - Made of a suffix of the first half of the subarray and a prefix of the second half
- https://www.youtube.com/watch?v=ohHWQf1HDfU
-
+  Algorithm 3: Divide and Conquer. If we split the array into two halves, we know that the maximum
+  subarray will either be:
+   - Contained entirely in the first half,
+   - Contained entirely in the second half or
+   - Made of a suffix of the first half of the subarray and a prefix of the second half
+  Code based off examples as described here: https://www.youtube.com/watch?v=ohHWQf1HDfU
 */
 int divideConquer(int array[], int len) {
   int sumLeft = INT_MIN;
@@ -140,15 +122,17 @@ int divideConquer(int array[], int len) {
 }
 
 
-// Algorithm 4: Linear-time. Use the following ideas to develop a nonrecursive linear time algorithm. Start
-// at the left end of the array and progress towards the right, keeping track of the maximum subarray sum
-// seen so far. Knowing a maximum subarray of A[1 . . j], extend the answer to find a maximum subarray
-// ending at index j+1 by using the following observation:
-//  a maximum subarray of A[1 . . j+1] is either a maximum subarray of A[1 . . j]
-//  or a subarray A[i . . j+1], for some 1 ≤ i ≤ j+1. Determine a maximum
-// subarray of the form A[i . . j+1] in constant time based on knowing a maximum subarray ending at
-// index j.
-// https://en.wikipedia.org/wiki/Maximum_subarray_problem
+/*
+  Algorithm 4: Linear-time. Use the following ideas to develop a nonrecursive linear time algorithm. Start
+  at the left end of the array and progress towards the right, keeping track of the maximum subarray sum
+  seen so far. Knowing a maximum subarray of A[1 . . j], extend the answer to find a maximum subarray
+  ending at index j+1 by using the following observation:
+  a maximum subarray of A[1 . . j+1] is either a maximum subarray of A[1 . . j]
+  or a subarray A[i . . j+1], for some 1 ≤ i ≤ j+1. Determine a maximum
+  subarray of the form A[i . . j+1] in constant time based on knowing a maximum subarray ending at
+  index j.
+  Code based off examples and discussion here: https://en.wikipedia.org/wiki/Maximum_subarray_problem
+*/
 int linearTime(int array[], int size) {
   int maxEnding = 0;
   int maxSoFar = 0;
@@ -163,9 +147,16 @@ int linearTime(int array[], int size) {
 
 }
 
+/*
+  This function calulates the sum of each array listed in the 'input' file.
+  The arrays must follow the following format:
+    [ 1, 2, 3, 4, 1 ]
+    [ 1, 32, 33, 4, 1 ]
+    ...
+*/
 void calculateSum(FILE *input) {
-  char inputBuffer[1000];
-  int numberArray[1000];
+  char inputBuffer[100000];
+  int numberArray[100000];
   int pos = 0;
   int i = 0;
 
@@ -173,7 +164,7 @@ void calculateSum(FILE *input) {
   FILE *output;
   output = fopen("MSS_Results.txt", "w");        // Open totally new output file.
 
-  while(fgets(inputBuffer, 1000, input)) {       // Get array line.
+  while(fgets(inputBuffer, 100000, input)) {       // Get array line.
     // Write array to output file.
     fputs(inputBuffer, output); // Write array to file.
 
@@ -259,6 +250,16 @@ void calculateSum(FILE *input) {
 
 }
 
+
+/*
+  This function generates a set of random inputs.
+  It uses the maxSize to determine how big an array can be and totalCount to determine
+  how many arrays to generate.
+  The generated input file will be in the following format:
+    [ 1, 2, 3, 4, 1 ]
+    [ 1, 32, 33, 4, 1 ]
+    ...
+*/
 FILE* generateRandom(int maxSize, int totalCount){
   FILE *randomFile;
   randomFile = fopen("MSS_RandomInput.txt", "w");
@@ -300,7 +301,7 @@ FILE* generateRandom(int maxSize, int totalCount){
   return randomFile;
 }
 
-
+// Main function.
 int main(int argc, char *argv[]) {
   FILE *input;
 
