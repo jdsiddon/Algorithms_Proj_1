@@ -163,118 +163,174 @@ int linearTime(int array[], int size) {
 
 }
 
-
-int main(int argc, char *argv[]) {
+void calculateSum(FILE *input) {
   char inputBuffer[1000];
   int numberArray[1000];
   int pos = 0;
   int i = 0;
 
-  // Make sure they provided an algorithm and file to test.
-  if(argc < 2) {
-    printf("Usage: ./enum [FILENAME]\n");
-    return 0;
-  }
+  // Open output file to write results to.
+  FILE *output;
+  output = fopen("MSS_Results.txt", "w");        // Open totally new output file.
 
-  // Make sure input file is readable.
-  FILE *input;
-  input = fopen(argv[1], "r");
-  if (input == NULL) {
-    printf("ERROR: File not readable.");
-    return 0;
+  while(fgets(inputBuffer, 1000, input)) {       // Get array line.
+    // Write array to output file.
+    fputs(inputBuffer, output); // Write array to file.
 
-  } else {
-    // Open output file to write results to.
-    FILE *output;
-    output = fopen("MSS_Results.txt", "w");        // Open totally new output file.
+    char *number = strtok(inputBuffer, " ,][");
 
-    while(fgets(inputBuffer, 1000, input)) {       // Get array line.
-      // Write array to output file.
-      fputs(inputBuffer, output); // Write array to file.
-
-      char *number = strtok(inputBuffer, " ,][");
-
-      // Convert input array line to an array of numbers.
-      while (number != NULL)
-      {
-        numberArray[pos] = atoi(number);
-        number = strtok (NULL, " ,][");
-        pos++;
-      }
-
-
-      int highestSum = 0;
-      clock_t timer;
-      int time_elapsed;
-      char secondsChar[50];
-      char sumChar[50];
-
-      fputs("--- Algorithm 1 ---\n", output);
-      timer = clock();                 // Get current time.
-      highestSum = arrayEnum1(numberArray, pos-1);
-      time_elapsed = clock() - timer;
-      snprintf(secondsChar, 50, "%d", time_elapsed);  // Convert time to string.
-      snprintf(sumChar, 50, "%d", highestSum);  // Convert integer to string.
-
-      fputs("Time: ", output);
-      printf("%s\n", secondsChar);
-      fputs(secondsChar, output);
-      fputs("\nSum: ", output);
-      fputs(sumChar, output); // Write result to file.
-      fputs("\n\n", output);
-
-
-      fputs("--- Algorithm 2 ---\n", output);
-      timer = clock();                 // Get current time.
-      highestSum = arrayEnum2(numberArray, pos-1);
-      time_elapsed = clock() - timer;
-      snprintf(secondsChar, 50, "%d", time_elapsed);  // Convert time to string.
-      snprintf(sumChar, 50, "%d", highestSum);  // Convert integer to string.
-
-      fputs("Time: ", output);
-      fputs(secondsChar, output);
-      fputs("\nSum: ", output);
-      fputs(sumChar, output); // Write result to file.
-      fputs("\n\n", output);
-
-
-      fputs("--- Algorithm 3 ---\n", output);
-      timer = clock();                 // Get current time.
-      highestSum = divideConquer(numberArray, pos-1); // Write array to file.
-      time_elapsed = clock() - timer;
-      snprintf(secondsChar, 50, "%d", time_elapsed);  // Convert time to string.
-      snprintf(sumChar, 50, "%d", highestSum);  // Convert integer to string.
-
-      fputs("Time: ", output);
-      fputs(secondsChar, output);
-      fputs("\nSum: ", output);
-      fputs(sumChar, output); // Write result to file.
-      fputs("\n\n", output);
-
-
-      fputs("--- Algorithm 4 ---\n", output);
-      timer = clock();                 // Get current time.
-      highestSum = linearTime(numberArray, pos-1); // Write array to file.
-      time_elapsed = clock() - timer;
-      snprintf(secondsChar, 50, "%d", time_elapsed);  // Convert time to string.
-      snprintf(sumChar, 50, "%d", highestSum);  // Convert integer to string.
-
-      fputs("Time: ", output);
-      fputs(secondsChar, output);
-      fputs("\nSum: ", output);
-      fputs(sumChar, output); // Write result to file.
-      fputs("\n\n", output);
-
-
-      // Reset for next line.
-      bzero((char *) &inputBuffer, sizeof(inputBuffer));      // Clear out input buffer.
-      pos = 0;
+    // Convert input array line to an array of numbers.
+    while (number != NULL)
+    {
+      numberArray[pos] = atoi(number);
+      number = strtok (NULL, " ,][");
+      pos++;
     }
 
-    fclose(output);
-    fclose(input);
+    int highestSum = 0;
+    clock_t timer;
+    int time_elapsed;
+    char secondsChar[50];
+    char sumChar[50];
 
+    fputs("--- Algorithm 1 ---\n", output);
+    timer = clock();                 // Get current time.
+    highestSum = arrayEnum1(numberArray, pos-1);
+    time_elapsed = clock() - timer;
+    snprintf(secondsChar, 50, "%d", time_elapsed);  // Convert time to string.
+    snprintf(sumChar, 50, "%d", highestSum);  // Convert integer to string.
+
+    fputs("Time: ", output);
+    printf("%s\n", secondsChar);
+    fputs(secondsChar, output);
+    fputs("\nSum: ", output);
+    fputs(sumChar, output); // Write result to file.
+    fputs("\n\n", output);
+
+
+    fputs("--- Algorithm 2 ---\n", output);
+    timer = clock();                 // Get current time.
+    highestSum = arrayEnum2(numberArray, pos-1);
+    time_elapsed = clock() - timer;
+    snprintf(secondsChar, 50, "%d", time_elapsed);  // Convert time to string.
+    snprintf(sumChar, 50, "%d", highestSum);  // Convert integer to string.
+
+    fputs("Time: ", output);
+    fputs(secondsChar, output);
+    fputs("\nSum: ", output);
+    fputs(sumChar, output); // Write result to file.
+    fputs("\n\n", output);
+
+
+    fputs("--- Algorithm 3 ---\n", output);
+    timer = clock();                 // Get current time.
+    highestSum = divideConquer(numberArray, pos-1); // Write array to file.
+    time_elapsed = clock() - timer;
+    snprintf(secondsChar, 50, "%d", time_elapsed);  // Convert time to string.
+    snprintf(sumChar, 50, "%d", highestSum);  // Convert integer to string.
+
+    fputs("Time: ", output);
+    fputs(secondsChar, output);
+    fputs("\nSum: ", output);
+    fputs(sumChar, output); // Write result to file.
+    fputs("\n\n", output);
+
+
+    fputs("--- Algorithm 4 ---\n", output);
+    timer = clock();                 // Get current time.
+    highestSum = linearTime(numberArray, pos-1); // Write array to file.
+    time_elapsed = clock() - timer;
+    snprintf(secondsChar, 50, "%d", time_elapsed);  // Convert time to string.
+    snprintf(sumChar, 50, "%d", highestSum);  // Convert integer to string.
+
+    fputs("Time: ", output);
+    fputs(secondsChar, output);
+    fputs("\nSum: ", output);
+    fputs(sumChar, output); // Write result to file.
+    fputs("\n\n", output);
+
+
+    // Reset for next line.
+    bzero((char *) &inputBuffer, sizeof(inputBuffer));      // Clear out input buffer.
+    pos = 0;
+  }
+
+  fclose(output);
+
+}
+
+FILE* generateRandom(int maxSize, int totalCount){
+  FILE *randomFile;
+  randomFile = fopen("MSS_RandomInput.txt", "w");
+  int i = 0;
+  int j = 0;
+  char writeBuff[10];
+  int arraySize = 0;
+
+  // Create random input.
+  for(i = 0; i < totalCount; i++) {
+
+    arraySize = (rand() % maxSize) + 1;             // Generate random from 1 - max.
+    int *array = malloc(arraySize * sizeof(int));   // Allocate space for array.
+
+    // Create array.
+    for(j = 0; j < arraySize; j++) {
+      array[j] = rand() % (101 - -101) + -101;
+    }
+
+    // Write array containing characters to text file.
+    fputs("[ ", randomFile);
+
+    // Write array to file.
+    for(j = 0; j < arraySize; j++) {
+      // printf("%d\n", array[j]);
+      snprintf(writeBuff, 10, "%d", array[j]);
+      fputs(writeBuff, randomFile);
+
+      if(j+1 != arraySize)      // Only add the trailing comma if we aren't on the last one.
+        fputs(", ", randomFile);
+    }
+
+    fputs(" ]\n", randomFile);
+
+    free(array);
+    array = 0;
+  }
+
+  return randomFile;
+}
+
+
+int main(int argc, char *argv[]) {
+  FILE *input;
+
+  srand(time(NULL));  // Rand seed.
+
+  // Make sure they provided an algorithm and file to test.
+  if(argc < 3) {
+    printf("Usage: ./enum -r [MAX] [COUNT] \n");
+    printf("Usage: ./enum -s [FILENAME] \n");
+    return 0;
+  }
+
+  if(strcmp(argv[1], "-r") == 0) {            // Generate random input file.
+    if(argc < 4) {
+      printf("Usage: ./enum -r [MAX] [COUNT]\n");
+      return 0;
+    }
+
+    input = generateRandom(atoi(argv[2]), atoi(argv[3]));
+
+  } else if(strcmp(argv[1], "-s") == 0) {     // Use static file.
+    // Make sure input file is readable.
+    input = fopen(argv[2], "r");
+    if (input == NULL) {
+      printf("ERROR: File not readable.");
+      return 0;
+    }
   }
 
 
+  calculateSum(input);
+  fclose(input);
 }
