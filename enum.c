@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <string.h>
+#include <time.h>
 
 // This is to prevent compile error "invalid in C99"
 // We are just defining our own max macro.
@@ -170,20 +171,14 @@ int main(int argc, char *argv[]) {
   int i = 0;
 
   // Make sure they provided an algorithm and file to test.
-  if(argc < 3) {
-    printf("Usage: ./enum [alg[X]] [filename]\n");
-    return 0;
-  }
-
-  // Make sure they provided a valid algorithm.
-  if (!(strcmp(argv[1], "alg1") == 0 || strcmp(argv[1], "alg2") == 0 || strcmp(argv[1], "alg3") == 0 || strcmp(argv[1], "alg4") == 0)) {
-    printf("Valid algorithms: alg1, alg2, alg3, alg4 \n");
+  if(argc < 2) {
+    printf("Usage: ./enum [FILENAME]\n");
     return 0;
   }
 
   // Make sure input file is readable.
   FILE *input;
-  input = fopen(argv[2], "r");
+  input = fopen(argv[1], "r");
   if (input == NULL) {
     printf("ERROR: File not readable.");
     return 0;
@@ -197,7 +192,7 @@ int main(int argc, char *argv[]) {
       // Write array to output file.
       fputs(inputBuffer, output); // Write array to file.
 
-      char *number = strtok (inputBuffer, " ,][");
+      char *number = strtok(inputBuffer, " ,][");
 
       // Convert input array line to an array of numbers.
       while (number != NULL)
@@ -207,22 +202,72 @@ int main(int argc, char *argv[]) {
         pos++;
       }
 
+
+      int highestSum = 0;
+      clock_t timer;
+      int time_elapsed;
+      char secondsChar[50];
+      char sumChar[50];
+
+      fputs("--- Algorithm 1 ---\n", output);
+      timer = clock();                 // Get current time.
+      highestSum = arrayEnum1(numberArray, pos-1);
+      time_elapsed = clock() - timer;
+      snprintf(secondsChar, 50, "%d", time_elapsed);  // Convert time to string.
+      snprintf(sumChar, 50, "%d", highestSum);  // Convert integer to string.
+
+      fputs("Time: ", output);
+      printf("%s\n", secondsChar);
+      fputs(secondsChar, output);
+      fputs("\nSum: ", output);
+      fputs(sumChar, output); // Write result to file.
+      fputs("\n\n", output);
+
+
+      fputs("--- Algorithm 2 ---\n", output);
+      timer = clock();                 // Get current time.
+      highestSum = arrayEnum2(numberArray, pos-1);
+      time_elapsed = clock() - timer;
+      snprintf(secondsChar, 50, "%d", time_elapsed);  // Convert time to string.
+      snprintf(sumChar, 50, "%d", highestSum);  // Convert integer to string.
+
+      fputs("Time: ", output);
+      fputs(secondsChar, output);
+      fputs("\nSum: ", output);
+      fputs(sumChar, output); // Write result to file.
+      fputs("\n\n", output);
+
+
+      fputs("--- Algorithm 3 ---\n", output);
+      timer = clock();                 // Get current time.
+      highestSum = divideConquer(numberArray, pos-1); // Write array to file.
+      time_elapsed = clock() - timer;
+      snprintf(secondsChar, 50, "%d", time_elapsed);  // Convert time to string.
+      snprintf(sumChar, 50, "%d", highestSum);  // Convert integer to string.
+
+      fputs("Time: ", output);
+      fputs(secondsChar, output);
+      fputs("\nSum: ", output);
+      fputs(sumChar, output); // Write result to file.
+      fputs("\n\n", output);
+
+
+      fputs("--- Algorithm 4 ---\n", output);
+      timer = clock();                 // Get current time.
+      highestSum = linearTime(numberArray, pos-1); // Write array to file.
+      time_elapsed = clock() - timer;
+      snprintf(secondsChar, 50, "%d", time_elapsed);  // Convert time to string.
+      snprintf(sumChar, 50, "%d", highestSum);  // Convert integer to string.
+
+      fputs("Time: ", output);
+      fputs(secondsChar, output);
+      fputs("\nSum: ", output);
+      fputs(sumChar, output); // Write result to file.
+      fputs("\n\n", output);
+
+
+      // Reset for next line.
       bzero((char *) &inputBuffer, sizeof(inputBuffer));      // Clear out input buffer.
-
-      if(strcmp(argv[1], "alg1") == 0) {        // Executing Algorithm 1: Enumeration
-        printf("--- Algorithm 1 --- \n");
-        printf("%d \n", arrayEnum1(numberArray, pos-1));
-      } else if(strcmp(argv[1], "alg2") == 0) { // Executing Algorithm 2: Better Enumeration
-        printf("--- Algorithm 2 --- \n");
-        printf("%d \n", arrayEnum2(numberArray, pos-1));
-      } else if(strcmp(argv[1], "alg3") == 0) { // Executing Algorithm 3: Divide and Conquer
-        printf("--- Algorithm 3 --- \n");
-        printf("%d \n", divideConquer(numberArray, pos-1));
-      } else if(strcmp(argv[1], "alg4") == 0) { // Executing Algorithm 4: Linear-time
-        printf("--- Algorithm 4 --- \n");
-        printf("%d \n", linearTime(numberArray, pos-1));
-      }
-
       pos = 0;
     }
 
