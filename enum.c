@@ -262,7 +262,7 @@ void calculateSum(FILE *input) {
 */
 FILE* generateRandom(int maxSize, int totalCount){
   FILE *randomFile;
-  randomFile = fopen("MSS_RandomInput.txt", "w");
+  randomFile = fopen("MSS_RandomInput.txt", "w+");
   int i = 0;
   int j = 0;
   char writeBuff[10];
@@ -271,7 +271,7 @@ FILE* generateRandom(int maxSize, int totalCount){
   // Create random input.
   for(i = 0; i < totalCount; i++) {
 
-    arraySize = (rand() % maxSize) + 1;             // Generate random from 1 - max.
+    arraySize = (rand() % maxSize) + 10;             // Generate random from 10 - max.
     int *array = malloc(arraySize * sizeof(int));   // Allocate space for array.
 
     // Create array.
@@ -298,6 +298,7 @@ FILE* generateRandom(int maxSize, int totalCount){
     array = 0;
   }
 
+  rewind(randomFile);     // Start back at the beginning of our file to read from it now.
   return randomFile;
 }
 
@@ -319,7 +320,6 @@ int main(int argc, char *argv[]) {
       printf("Usage: ./enum -r [MAX] [COUNT]\n");
       return 0;
     }
-
     input = generateRandom(atoi(argv[2]), atoi(argv[3]));
 
   } else if(strcmp(argv[1], "-s") == 0) {     // Use static file.
@@ -330,7 +330,6 @@ int main(int argc, char *argv[]) {
       return 0;
     }
   }
-
 
   calculateSum(input);
   fclose(input);
