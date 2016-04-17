@@ -197,6 +197,7 @@ void calculateSum(FILE *input) {
     fputs("\nSum: ", output);
     fputs(sumChar, output); // Write result to file.
     fputs("\n\n", output);
+    time_elapsed = 0;
 
 
     fputs("--- Algorithm 2 ---\n", output);
@@ -211,6 +212,7 @@ void calculateSum(FILE *input) {
     fputs("\nSum: ", output);
     fputs(sumChar, output); // Write result to file.
     fputs("\n\n", output);
+    time_elapsed = 0;
 
 
     fputs("--- Algorithm 3 ---\n", output);
@@ -225,6 +227,7 @@ void calculateSum(FILE *input) {
     fputs("\nSum: ", output);
     fputs(sumChar, output); // Write result to file.
     fputs("\n\n", output);
+    time_elapsed = 0;
 
 
     fputs("--- Algorithm 4 ---\n", output);
@@ -239,7 +242,7 @@ void calculateSum(FILE *input) {
     fputs("\nSum: ", output);
     fputs(sumChar, output); // Write result to file.
     fputs("\n\n", output);
-
+    time_elapsed = 0;
 
     // Reset for next line.
     bzero((char *) &inputBuffer, sizeof(inputBuffer));      // Clear out input buffer.
